@@ -8,7 +8,76 @@ and open the template in the editor.
     Author     : K4RELS
 
 
-loading bar: 
+loading bar: max attribute and value attribute
 square fill it with css perrcentage of length
 */
+/*
 
+* {
+    
+    border:solid black 1px ;
+    
+}*/
+
+
+
+
+/***************loading bar ************************/
+
+
+
+
+
+
+#breakLength, #sessionLength
+{
+    
+    display:inline-block;
+    text-align: center ;
+}
+
+
+#currentCountdown,
+#title,
+.text
+{
+    
+    text-align: center ;
+    
+}
+
+.timers {
+    /* trick to make parent div as wide as content*/
+   display: inline-block;
+   /* to center inline block*/
+   text-align: center;
+  margin-left: 200px;
+    
+}
+
+p.text {
+    
+    font-size: 1.2em ;
+    
+    
+}
+
+.btn-primary {
+    
+    background-color: black !important ;
+    
+    
+    
+}
+
+
+
+
+#startStopButton
+ {
+    
+    
+    margin-right:  auto ;
+    
+    
+}

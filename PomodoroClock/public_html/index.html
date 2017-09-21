@@ -10,29 +10,53 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link  href="CSS/normalize.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
         <link href="CSS/styles.css" rel="stylesheet">
     </head>
     <body>
-        <div id="wrapper">
+        <div class="container">
             
             
-            <h2>Pomodoro Clock</h2>
-            <input type="button" id="startStopButton" value="Haha" >
-            <p>Break Length</p>
-            <button id="minusBreak">-</button>
-            <button id="resetButton">Reset</button>
-            <p id="breakLength">stopTimer</p>
-            <button id="plusBreak">+</button>
-            <p>Session Length</p>
-            <button id="minusSession">-</button>
-            <p id="sessionLength">gfdgdg</p>
-            <button id="plusSession">+</button>
+            <h2 class="display-2" id='title' >Pomodoro Clock</h2>
             
+            <div class="col-auto d-flex justify-content" >
+            <input type="button" id="startStopButton" value="Start" class="btn btn-primary" >
+             <button id="resetButton" class="btn btn-primary" >Reset</button>
+            </div>
+             
+             <div class="col-8  mx-auto py-3">
+                 
+                   
+            <p class='text'>Break Length</p>
+              
+            <div class='timers'>                        
+            <button id="minusBreak" class="btn btn-primary" >-</button>
+            <button id="minusSecBreak" class="btn btn-primary" >-</button>
+           
+            <p id="breakLength" class="display-4 ">stopTimer</p>
+            <button class="buttonUse btn btn-primary" id="plusBreak">+</button>
+            <button class="buttonUse btn btn-primary" id="plusSecBreak">+</button>
+            </div>
+             </div>
+             
             
-            <p id="progressBar"></p>
-            <p id="currentCountdown"></p>
-            
-            
+            <div class ="col-8 mx-auto py-3">
+            <p class='text'>Session Length</p>
+             <div class='timers'>    
+            <button class="buttonUse btn btn-primary" id="minusSession">-</button>
+            <button class="buttonUse btn btn-primary" id="minusSecSession">-</button>
+            <p  id="sessionLength" class="display-4">>gfdgdg</p>
+            <button class="buttonUse btn btn-primary" id="plusSession">+</button>
+            <button class="buttonUse  btn btn-primary"  id="plusSecSession">+</button>
+            </div>
+            </div>
+            <div class="col-auto py-3">
+            <p class="mx-auto display-3" id="currentCountdown"></p>
+<!--            loading bar-->
+ <div class="progress">
+  <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" id='loadingBar' role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+            </div>
             
             
             
@@ -64,7 +88,7 @@ and open the template in the editor.
   src="http://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
-        
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
         <script src="JS/pomodoroClock.js" ></script>
     </body>
 </html>

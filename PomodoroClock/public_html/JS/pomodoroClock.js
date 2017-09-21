@@ -3,9 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+
 /* configurable timer countdown, afterwards starts anotherr timer/
 setInterval();
 / Comment out every project. 
+
+Skills used bootstrap
 functions reset
 min
 sec
@@ -18,7 +22,9 @@ toSeconds
 totalSeconds function ?
 use a constuctor to create a class.
 https://stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript Accuracy problems date instead
-Ideas ; loading bar which fills up
+Ideas ; loading bar which fills up, different colorr for both timers
+Create update function, instead of calling it individual all the time
+Update seconds buttons
 */
 /*******************Class Timer*****************************/
 class Timer {
@@ -36,6 +42,30 @@ class Timer {
 
 
     }
+    
+    get currentTotalSeconds() {
+        
+        
+        
+        return  parseFloat(this.currentMin*60 + this.currentSec) ;
+        
+        
+        
+    }
+    
+    
+     get overallTotalSeconds() {
+        
+        
+        
+          return parseFloat(this.min*60 + this.sec) ;
+        
+        
+        
+    }
+    
+    
+    
     get totalTimeString() {
         let output = '';
 
@@ -48,7 +78,11 @@ class Timer {
         return output;
     }
 
-
+     get completePercentage() {
+         
+         
+         return (100-  (this.currentTotalSeconds/ this.overallTotalSeconds) *100)+"%" ;
+     }
 
 
     get timeString() {
@@ -128,17 +162,50 @@ class Timer {
     }
 
     minusMin(min) {
-
+        if(this.min >0) {
         this.min -= min;
+    }
+    }
+    
+    addSec(sec) {
+
+           if(this.sec <59) {
+        this.sec += sec;
+        
+    }
+    else {
+        
+        this.addMin(1) ;
+         this.sec = 0;
+    } 
 
     }
 
-    reset() {
+    minusSec(sec) {
+        if(this.sec >0) {
+        this.sec -= sec;
+        
+    }
+    else {
+        
+        this.minusMin(1) ;
+         this.sec = 59;
+    }
+    
+    }
+    
+    
+    
 
+    reset() {
+         
+         
+        this.stop(); 
         this.currentMin = this.min;
         this.currentSec = this.sec;
         this.finished = false;
-        this.started = false;
+        
+   
 
     }
 
@@ -151,17 +218,26 @@ class Timer {
 
 
 let sessionLength = new Timer();
+
 let sessionBreak = new Timer();
 let updateID;
 
 let toggleNum = 0;
 
 
-/********************Interaction*******************************/
-
-
-sessionLength.setTimer(1, 15);
+/********************Initialize*******************************/
+sessionLength.setTimer(0, 15);
 sessionBreak.setTimer(0, 8);
+$('#sessionLength').text(sessionLength.totalTimeString);
+$('#breakLength').text(sessionBreak.totalTimeString);
+$('#currentCountdown').text(sessionLength.timeString);
+ $('#loadingBar').attr('aria-valuemax', sessionLength.overallTotalSeconds) ;
+ $('#loadingBar').attr('aria-valuenow', sessionLength.currentTotalSeconds );
+ $('#loadingBar').css('width',sessionLength.completePercentage);
+ 
+
+
+
 
 /********************Adding/Substracting to the break timer*******************************/
 $('#minusBreak').on('click', () => {
@@ -174,6 +250,42 @@ $('#plusBreak').on('click', () => {
     $('#breakLength').text(sessionBreak.totalTimeString);
 
 });
+
+$('#minusSecBreak').on('click', () => {
+    sessionBreak.minusSec(1);
+    $('#breakLength').text(sessionBreak.totalTimeString);
+
+});
+$('#plusSecBreak').on('click', () => {
+    sessionBreak.addSec(1);
+    $('#breakLength').text(sessionBreak.totalTimeString);
+
+});
+
+/********************Adding/Substracting to the session timer*******************************/
+$('#minusSession').on('click', () => {
+    sessionLength.minusMin(1);
+    $('#sessionLength').text(sessionLength.totalTimeString);
+
+});
+$('#plusSession').on('click', () => {
+    sessionLength.addMin(1);
+    $('#sessionLength').text(sessionLength.totalTimeString);
+
+});
+
+$('#minusSecSession').on('click', () => {
+    sessionLength.minusSec(1);
+    $('#sessionLength').text(sessionLength.totalTimeString);
+
+});
+$('#plusSecSession').on('click', () => {
+    sessionLength.addSec(1);
+    $('#sessionLength').text(sessionLength.totalTimeString);
+
+});
+
+
 /********************Interaction*******************************/
 
 
@@ -187,18 +299,19 @@ $('#sessionLength').on('click', () => {
 $('#startStopButton').on('click', () => {
 
 
-    //  only runs as long as session time is not 0:00
-
+    
+// runs if button is stopped
     if (toggleNum === 0) {
         $('#startStopButton').val("Stop");
         toggleNum = 1;
         // check if session length is finished if yes start sessionBreak
         sessionLength.finished ? sessionBreak.start() : sessionLength.start();
         updateID = setInterval(function() {
-
+                
             // start with running session
             if (sessionLength.finished === false) {
-
+                // chnage loading bar color to blue
+                    $('#loadingBar').addClass('bg-info').removeClass('bg-success') ;
                 // if session is not rrunning already run it
                 if (sessionLength.running === false) {
 
@@ -206,15 +319,18 @@ $('#startStopButton').on('click', () => {
                     toggleNum = 1;
 
                 }
-                $("#currentCountdown").text(sessionLength.timeString);
-
-
-
+                $("#currentCountdown").text(sessionLength.timeString); 
+               $('#loadingBar').attr('aria-valuemax', sessionLength.overallTotalSeconds) ;
+                 
+              $('#loadingBar').attr('aria-valuenow', sessionLength.currentTotalSeconds );
+                      $('#loadingBar').css('width',sessionLength.completePercentage);
+             
 
             }
             // if session is done, run break timer  if it is not done yet  
             else if (sessionBreak.finished === false) {
-
+                // chnage loading bar color to red
+                     
 
                 // check if it is running if not start it
                 if (sessionBreak.running === false) {
@@ -225,6 +341,11 @@ $('#startStopButton').on('click', () => {
                 }
 
                 $("#currentCountdown").text(sessionBreak.timeString);
+            $('#loadingBar').attr('aria-valuemax', sessionBreak.overallTotalSeconds) ;
+         
+              $('#loadingBar').attr('aria-valuenow', sessionBreak.currentTotalSeconds );
+               $('#loadingBar').css('width',sessionBreak.completePercentage);
+                 $('#loadingBar').removeClass('bg-info').addClass('bg-success') ;
 
 
 
@@ -236,14 +357,19 @@ $('#startStopButton').on('click', () => {
                 $('#startStopButton').val("Start");
                 toggleNum = 0;
                 clearInterval(updateID);
-            }
+                 $('#currentCountdown').text(sessionLength.timeString);
+                  $('#loadingBar').attr('aria-valuemax', sessionLength.overallTotalSeconds) ;
+              $('#loadingBar').attr('aria-valuenow', sessionLength.currentTotalSeconds );
+                    $('#loadingBar').css('width',sessionLength.completePercentage);     
+                      $('#loadingBar').addClass('bg-info').removeClass('bg-success') ;
+            } 
 
 
 
 
         }, 1000);
 
-
+// if button is running
     } else {
 
 
@@ -258,7 +384,7 @@ $('#startStopButton').on('click', () => {
 
         clearInterval(updateID);
         toggleNum = 0;
-
+       
 
     }
 
@@ -267,19 +393,24 @@ $('#startStopButton').on('click', () => {
 
 });
 
-
+// reset both timers manually
 $('#resetButton').on('click', () => {
 
 
 
-
-    sessionLength = new Timer(0, 15);
-    sessionBreak = new Timer(0, 8);
-
+   clearInterval(updateID);
+    sessionLength.reset();
+    sessionBreak.reset();
+ 
     toggleNum = 0;
 
 
-
+     $('#startStopButton').val("Start");
     $('#currentCountdown').text(sessionLength.timeString);
-
+    $('#loadingBar').attr('aria-valuemax', sessionLength.overallTotalSeconds) ;
+              $('#loadingBar').attr('aria-valuenow', sessionLength.currentTotalSeconds );
+                     $('#loadingBar').css('width',sessionLength.completePercentage);
+  $('#loadingBar').addClass('bg-info').removeClass('bg-success') ;
 });
+
+
